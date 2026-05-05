@@ -1,15 +1,26 @@
 import { login } from "./login"
 
+// Testes da regra de login baseada no email retornado pela API simulada.
 describe('login', () => {
 
-    const mockEmail = 'nath@dio.bank'
-    it('Deve exibir um alert com boas vindas caso o email seja válido', async() => {
-        const response = await login(mockEmail)
+    const mockEmail = 'test@teste.com'
+    const mockPassword = '123456'
+
+    // Deve retornar true quando email e senha corresponderem aos dados mockados.
+    it('Deve validar as credenciais esperadas', async() => {
+        const response = await login(mockEmail, mockPassword)
         expect(response).toBeTruthy()
     })
 
-    it('Deve exibir um erro caso o email seja inválido', async() => {
-        const response = await login('email@invalido.com')
+    // Deve retornar false quando o email nao corresponder ao esperado.
+    it('Deve rejeitar um email invalido', async() => {
+        const response = await login('email@invalido.com', mockPassword)
+        expect(response).toBeFalsy()
+    })
+
+    // Deve retornar false quando a senha nao corresponder ao esperado.
+    it('Deve rejeitar uma senha invalida', async() => {
+        const response = await login(mockEmail, '000000')
         expect(response).toBeFalsy()
     })
 })
